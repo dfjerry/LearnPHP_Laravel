@@ -21,3 +21,4 @@ Route::get('/demo-routing', "WebController@demoRouting");//goi sang controller, 
 
 Route::get('/login', 'WebController@login');
 Route::get('/register', 'WebController@register');
+Route::get('/forgot', 'WebController@forgot');

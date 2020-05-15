@@ -1,12 +1,9 @@
 @extends("layout")
 @section("content")
-    <form>
-        <x-inputs.email name="email" holder="Email"/>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-
+        <form>
+            <x-inputs.email type="type" name="email" holder="Email"/>
+            <x-inputs.password type="password" name="password" holder="Password"/>
+            <x-inputs.button/>
+        </form>
+        <a style="color: black; margin-left: 100px; margin-top: 30px" href="#">Forgot password? <b>Click Here</b></a>
     @endsection

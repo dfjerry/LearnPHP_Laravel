@@ -1,3 +1,56 @@
 body{
     background-color: darkgrey;
 }
+.form{
+    background-color: #18ba97;
+    padding: 50px 100px;
+}
+
+.logo-user{
+    text-align: center;
+}
+.logo-user i{
+    font-size: 100px;
+    padding: 20px;
+    border-radius: 50%;
+    border: 1px solid aquamarine;
+    background-color: aquamarine;
+    color: lightcyan;
+}
+.input{
+    display: flex;
+    flex-direction: row;
+    background-color: #8099a5;
+    height: 45px;
+    border: none;
+
+}
+.input input{
+    height: 100%;
+    border-radius: 0;
+    border: none;
+    background-color: #fffb;
+}
+.icon{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding: 10px;
+}
+.input i{
+    font-size: 20px;
+    color: white;
+}
+.form-content{
+    padding: 40px 40px;
+    background-color: #ffffff;
+    margin-top: 30px;
+}
+.submit{
+    width: 300px;
+    margin-left: 50px;
+    background-color: gold;
+    border: none;
+    border-radius: 0;
+    color: black;
+}

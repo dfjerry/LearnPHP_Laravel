@@ -1,1 +1,3 @@
-<h1 style="text-align: center">Header</h1>
+<div class="logo-user">
+    <i class="fas fa-user"></i>
+</div>
