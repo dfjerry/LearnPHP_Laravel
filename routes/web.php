@@ -20,3 +20,17 @@ Route::get('/demo-routing', "WebController@demoRouting");//goi sang controller, 
 Route::get('/login', 'WebController@login');
 Route::get('/register', 'WebController@register');
 Route::get('/forgot', 'WebController@forgot');
+
+
+//Category
+Route::get('/list-category', 'WebController@listCategory');
+Route::get('/new-category', 'WebController@newCategory');
+
+Route::post('/save-category', 'WebController@saveCategory');
+
+//Brand
+Route::get('/list-brand', 'WebController@listBrand');
+Route::get('/new-brand', 'WebController@newBrand');
+
+Route::post('/save-brand', 'WebController@saveBrand');
+
