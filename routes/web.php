@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', "WebController@index");
 
 Route::get('/demo-routing', "WebController@demoRouting");//goi sang controller, action chính là function trong controller
 

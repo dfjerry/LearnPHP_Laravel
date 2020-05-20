@@ -18,5 +18,7 @@ class WebController extends Controller
     public function forgot(){
         return view("forgot");
     }
-
+    public function index(){
+        return view("home");
+    }
 }
