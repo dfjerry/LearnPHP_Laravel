@@ -44,12 +44,30 @@
                                 <p>New Category</p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link active">
+                        <i class="nav-icon fas fa-address-card"></i>
+                        <p>
+                            Brand
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./index3.html" class="nav-link">
+                            <a href="{{url('/list-brand')}}" class="nav-link active">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v3</p>
+                                <p>List Brand</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{url('/new-brand')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>New Brand</p>
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
                 <li class="nav-item">

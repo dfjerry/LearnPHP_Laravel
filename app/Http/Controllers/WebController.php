@@ -23,6 +23,7 @@ class WebController extends Controller
     public function index(){
         return view("home");
     }
+    //category
     public function listCategory(){
         $categories = DB::table("categories")->get(); //query builder
         //dd($categories);//giong vardum
@@ -55,5 +56,33 @@ class WebController extends Controller
         //dd($request->all());
         //lấy tất cả dữ liệu ng dùng gửi lên ở body in ra
         return redirect()->to("/list-category");
+    }
+
+    //brand
+    public function listBrand(){
+        $brands = DB::table("brands")->get(); //query builder
+        return view('brand.list', [
+            "brands"=> $brands
+        ]);
+    }
+    public function newBrand(){
+        return view("brand.new");
+    }
+    public function saveBrand(Request $request){
+        $request->validate([
+            "brand_name"=>"required|string|min:2|unique:brands"
+        ]);
+        try {
+            DB::table("brands")->insert([//bảng categories
+                "brand_name"=>$request->get("brand_name"),//category_name thứ 1 là tên cột trong categories, $request->get(category_name) cái này là name ở input
+                "created_at"=> Carbon::now(),//Carbon now lấy time hiện tại
+                "updated_at"=> Carbon::now()
+            ]);
+        }catch (\Exception $exception){
+            return redirect()->back();//back() trở lại trang trước, ở đây là trang form
+        }
+        //dd($request->all());
+        //lấy tất cả dữ liệu ng dùng gửi lên ở body in ra
+        return redirect()->to("/list-brand");
     }
 }
