@@ -94,7 +94,15 @@ class WebController extends Controller
         }
         return redirect()->to("/list-category");
     }
-
+    public function deleteCategory($id){
+        $category = Category::findOrFail($id);//lấy category được truyền vào id lấy từ param
+        try {
+            $category->delete();//xóa category
+        }catch (\Exception $exception){
+            return redirect()->back();
+        }
+        return redirect()->to("/list-category");
+    }
     //BRAND
     public function listBrand(){
         $brands = DB::table("brands")->get(); //query builder

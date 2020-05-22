@@ -29,7 +29,7 @@ Route::get('/new-category', 'WebController@newCategory');
 Route::post('/save-category', 'WebController@saveCategory');
 Route::get('/edit-category/{id}', 'WebController@editCategory');
 Route::put('/update-category/{id}', 'WebController@updateCategory');
-
+Route::delete('/delete-category/{id}', 'WebController@deleteCategory');
 //Brand
 Route::get('/list-brand', 'WebController@listBrand');
 Route::get('/new-brand', 'WebController@newBrand');
