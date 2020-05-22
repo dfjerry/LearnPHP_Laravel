@@ -26,3 +26,10 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
+$factory->define(\App\Brand::class, function (Faker $faker){
+   return [
+       //define 1 factory de insert vao du lieu ao
+     "brand_name"=>$faker->unique()->company
+   ];
+});
+

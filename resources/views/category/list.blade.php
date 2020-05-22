@@ -27,15 +27,18 @@
                     <th>Category Name</th>
                     <th>Created At</th>
                     <th>Updated At</th>
+                    <th>Edit Category</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($categories as $category)
                 <tr>
-                    <td>{{$category->id}}</td>
-                    <td>{{$category->category_name}}</td>
-                    <td>{{$category->created_at}}</td>
-                    <td>{{$category->updated_at}}</td>
+                    <td>{{$category->__get("id")}}</td>
+                    <td>{{$category->__get("category_name")}}</td>
+                    <td>{{$category->__get("created_at")}}</td>
+                    <td>{{$category->__get("updated_at")}}</td>
+                    <td><a href="{{url("/edit-category/{$category->__get("id")}")}}" class="btn btn-outline-dark">Edit</a></td>
+{{--                    Link đến $category cần edit--}}
                 </tr>
                     @endforeach
                 {{-- Cú pháp của vòng lặp blade engine thay cho php echo--}}
