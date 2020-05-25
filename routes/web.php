@@ -35,4 +35,13 @@ Route::get('/list-brand', 'WebController@listBrand');
 Route::get('/new-brand', 'WebController@newBrand');
 
 Route::post('/save-brand', 'WebController@saveBrand');
+Route::get('/edit-brand/{id}', 'WebController@editBrand');
+Route::put('/update-brand/{id}', 'WebController@updateBrand');
+Route::delete('/delete-brand/{id}', 'WebController@deleteBrand');
+
+
+//PRODUCT
+Route::get("/list-product", "WebController@listProduct");
+Route::get("/new-product", "WebController@newProduct");
+Route::post("/save-product", "WebController@saveProduct");
 

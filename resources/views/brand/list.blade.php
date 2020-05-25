@@ -27,15 +27,25 @@
                     <th>Brand Name</th>
                     <th>Created At</th>
                     <th>Updated At</th>
+                    <th>Edit Brand</th>
+                    <th>Delete Brand</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($brands as $brand)
                 <tr>
-                    <td>{{$brand->id}}</td>
-                    <td>{{$brand->brand_name}}</td>
-                    <td>{{$brand->created_at}}</td>
-                    <td>{{$brand->updated_at}}</td>
+                    <td>{{$brand->__get("id")}}</td>
+                    <td>{{$brand->__get("brand_name")}}</td>
+                    <td>{{$brand->__get("created_at")}}</td>
+                    <td>{{$brand->__get("updated_at")}}</td>
+                    <td><a href="{{url("/edit-brand/{$brand->__get("id")}")}}" class="btn btn-outline-dark">Edit</a></td>
+                    <td>
+                        <form action="{{url("/delete-brand/{$brand->__get("id")}")}}" method="post">
+                            @method("DELETE")
+                            @csrf
+                            <button class="btn btn-outline-dark" type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </td>
                 </tr>
                     @endforeach
                 {{-- Cú pháp của vòng lặp blade engine thay cho php echo--}}
@@ -44,4 +54,5 @@
         </div>
         <!-- /.card-body -->
     </div>
+    {!! $brands->links() !!}
     @endsection

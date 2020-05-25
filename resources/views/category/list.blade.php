@@ -29,6 +29,7 @@
                     <th>Updated At</th>
                     <th>Edit Category</th>
                     <th>Delete Category</th>
+                    <th>Product Count</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,13 +50,20 @@
                             <button type="submit" onclick="return confirm('Are you sure?');" class="btn btn-outline-dark">Delete</button>
                         </form>
                     </td>
+
+                    <td>{{$category->__get("products_count")}}</td>
 {{--                    Link đến $category cần edit--}}
                 </tr>
                     @endforeach
                 {{-- Cú pháp của vòng lặp blade engine thay cho php echo--}}
                 </tbody>
             </table>
+
         </div>
+
         <!-- /.card-body -->
     </div>
+    {!! $categories->links() !!}
+{{--    {!! $categories->links('view.name') !!}--}}
+
     @endsection
