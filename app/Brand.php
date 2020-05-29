@@ -9,11 +9,15 @@ class Brand extends Model
     protected $table = 'brands';
     //khoa chinh la id thi ko cần phải viết lại
     public $fillable = [
-        "brand_name"
+        "brand_name",
+        "brand_image"
     ];
-    public function get($key){
-        if(is_null($this->__get($key)));
-        return "default value";
-        return $this->__get($key);
+    //hàm getImage lấy ảnh ra hiển thị ở view
+    public function getImage(){
+        if(is_null($this->__get("product_image"))){
+            return asset("media/default.png");
+        }
+        return asset($this->__get("product_image"));
     }
+
 }

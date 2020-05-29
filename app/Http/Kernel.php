@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -62,5 +63,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        //khai báo route middle ware vừa tạo
+        'admin' => \App\Http\Middleware\Admin::class,//khi nào cần dùng thì mới dùng đến. còn use ở trên thì lấy cả Admin
     ];
 }

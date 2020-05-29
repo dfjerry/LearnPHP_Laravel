@@ -12,36 +12,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', "WebController@index");
-
-Route::get('/demo-routing', "WebController@demoRouting");//goi sang controller, action chính là function trong controller
-
-Route::get('/login', 'WebController@login');
-Route::get('/register', 'WebController@register');
-Route::get('/forgot', 'WebController@forgot');
+Auth::routes();
+require_once "user.php";
+Route::group(["middleware"=>["admin", "auth"], "prefix"=>"admin"], function () {
+    require_once "admin.php";
+});
 
 
-//Category
-Route::get('/list-category', 'WebController@listCategory');
-Route::get('/new-category', 'WebController@newCategory');
 
-Route::post('/save-category', 'WebController@saveCategory');
-Route::get('/edit-category/{id}', 'WebController@editCategory');
-Route::put('/update-category/{id}', 'WebController@updateCategory');
-Route::delete('/delete-category/{id}', 'WebController@deleteCategory');
-//Brand
-Route::get('/list-brand', 'WebController@listBrand');
-Route::get('/new-brand', 'WebController@newBrand');
-
-Route::post('/save-brand', 'WebController@saveBrand');
-Route::get('/edit-brand/{id}', 'WebController@editBrand');
-Route::put('/update-brand/{id}', 'WebController@updateBrand');
-Route::delete('/delete-brand/{id}', 'WebController@deleteBrand');
-
-
-//PRODUCT
-Route::get("/list-product", "WebController@listProduct");
-Route::get("/new-product", "WebController@newProduct");
-Route::post("/save-product", "WebController@saveProduct");
 

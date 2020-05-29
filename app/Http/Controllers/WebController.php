@@ -11,22 +11,24 @@ use Illuminate\Support\Facades\DB;
 
 class WebController extends Controller
 {
-    public function demoRouting(){
-        return view("demo");// tra ve file demo.blade.php, nhung chi can viet demo
-    }
-    public function login(){
-        return view("login");
-    }
-    public function register(){
-        return view("register");
-    }
-    public function forgot(){
-        return view("forgot");
-    }
+//    public function demoRouting(){
+//        return view("demo");// tra ve file demo.blade.php, nhung chi can viet demo
+//    }
+//    public function login(){
+//        return view("login");
+//    }
+//    public function register(){
+//        return view("register");
+//    }
+//    public function forgot(){
+//        return view("forgot");
+//    }
     public function index(){
         return view("home");
     }
-
+    public function dashboard(){
+        return view("dashboard");
+    }
     //CATEGORY
     public function listCategory(){
         //query builder
@@ -62,8 +64,21 @@ class WebController extends Controller
         //phải là kiểu string tối thiểu 6 kí tự, unique không trùng categories bảng
         //khi dữ liệu qua đc validate thì thêm vào db
         try {
+            $categoryImage = null;
+            if($request->hasFile("category_image")){
+                $file = $request->file("category_image");
+                $allow = ["png", "jpg", "jpeg", "gif"];
+                $extName = $file->getClientOriginalExtension();//lấy đuôi file
+                if(in_array($extName, $allow)){
+                    $fileName = time().$file->getClientOriginalName();
+                    $file->move(public_path("media/categories"), $fileName);
+                    //convert string to productName
+                    $categoryImage = "media/categories/".$fileName;
+                }
+            }
             Category::create([
-                "category_name"=>$request ->get("category_name")
+                "category_name"=>$request ->get("category_name"),
+                "category_image"=>$categoryImage,
             ]);//return an Object of Category Model - trả về 1 đối tượng của category model,2 trường thời gian sẽ tự động
 //            DB::table("categories")->insert([//bảng categories
 //                "category_name"=>$request->get("category_name"),//category_name thứ 1 là tên cột trong categories, $request->get(category_name) cái này là name ở input
@@ -75,7 +90,7 @@ class WebController extends Controller
         }
         //dd($request->all());
         //lấy tất cả dữ liệu ng dùng gửi lên ở body in ra
-        return redirect()->to("/list-category");
+        return redirect()->to("/admin/list-category");
     }
     public function editCategory($id){
 //        $category = Category::find($id);
@@ -86,20 +101,38 @@ class WebController extends Controller
     }
     public function updateCategory($id, Request $request){
         //tra ve id
-        $category = Category::findOrFail($id);//lấy giá trị category theo giá trị đã sửa
+        $categories = Category::findOrFail($id);//lấy giá trị category theo giá trị đã sửa
         //validate
         $request->validate([
            "category_name"=> "required|min:2|unique:categories,category_name,($id)"//truyền vào giá trị id muốn loại trừ để giống đc chứ ko unique
         ]);
         //sau khi lấy được giá trị update mới và qua khâu validator thì update vào DB, update xong redirect về list, nếu ko đc thì back lại
         try {
-            $category->update([
-                "category_name"=> $request->get("category_name")
-            ]);
+            $categoryImage = $categories->get("category_image");
+            if($request->hasFile("category_image")){
+                $file = $request->file("category_image");
+                $allow = ["png", "jpg", "jpeg", "gif"];
+                $extName = $file->getClientOriginalExtension();//lấy đuôi file
+                if(in_array($extName, $allow)){
+                    $fileName = time().$file->getClientOriginalName();
+                    $file->move(public_path("media/categories"), $fileName);
+                    //convert string to productName
+                    $categoryImage = "media/categories/".$fileName;
+                }
+            }
+            $categories->update([
+                "category_name"=>$request->get("category_name"),
+                "category_image"=>$categoryImage,
+            ]);//return an Object of Category Model - trả về 1 đối tượng của category model,2 trường thời gian sẽ tự động
+//            DB::table("categories")->insert([//bảng categories
+//                "category_name"=>$request->get("category_name"),//category_name thứ 1 là tên cột trong categories, $request->get(category_name) cái này là name ở input
+//                "created_at"=> Carbon::now(),//Carbon now lấy time hiện tại
+//                "updated_at"=> Carbon::now()
+//            ]);
         }catch (\Exception $exception){
-            return redirect()->back();
+            return redirect()->back();//back() trở lại trang trước, ở đây là trang form
         }
-        return redirect()->to("/list-category");
+        return redirect()->to("/admin/list-category");
     }
     public function deleteCategory($id){
         $category = Category::findOrFail($id);//lấy category được truyền vào id lấy từ param
@@ -108,7 +141,7 @@ class WebController extends Controller
         }catch (\Exception $exception){
             return redirect()->back();
         }
-        return redirect()->to("/list-category");
+        return redirect()->to("/admin/list-category");
     }
     //BRAND
     public function listBrand(){
@@ -139,7 +172,7 @@ class WebController extends Controller
         }
         //dd($request->all());
         //lấy tất cả dữ liệu ng dùng gửi lên ở body in ra
-        return redirect()->to("/list-brand");
+        return redirect()->to("/admin/list-brand");
     }
     public function editBrand($id){
 //        $category = Category::find($id);
@@ -163,7 +196,7 @@ class WebController extends Controller
         }catch (\Exception $exception){
             return redirect()->back();
         }
-        return redirect()->to("/list-brand");
+        return redirect()->to("/admin/list-brand");
     }
     public function deleteBrand($id){
         $brands = Brand::findOrFail($id);//lấy category được truyền vào id lấy từ param
@@ -172,7 +205,7 @@ class WebController extends Controller
         }catch (\Exception $exception){
             return redirect()->back();
         }
-        return redirect()->to("/list-brand");
+        return redirect()->to("/admin/list-brand");
     }
 
 
@@ -213,9 +246,9 @@ class WebController extends Controller
                     $fileName = time().$file->getClientOriginalName();//name client gửi lên thế nào thì sẽ lấy đc như thế,
                     //gắn mốc thời gian để phân biệt tránh trường hợp up 2 ảnh giống tên
                     //upload file into public/media
-                    $file->move(public_path("media"), $fileName);
+                    $file->move(public_path("media/products"), $fileName);
                     //convert string to productName
-                    $productImage = "media/".$fileName;
+                    $productImage = "media/products/".$fileName;
                 }
             }
             Product::create([
@@ -230,40 +263,74 @@ class WebController extends Controller
         }catch (\Exception $exception){
             return redirect()->back();
         }
-        return redirect()->to("/list-product");
+        return redirect()->to("/admin/list-product");
     }
-//    public function editProduct($id){
-////        $category = Category::find($id);
-////        if(is_null($category))
-////            abort(404);//neu category = null trả về trang 404, dòng 73 74 75 code = dòng 76, thường dùng cách thứ 2
-//        $product = Product::findOrFail($id);//find tra ve 1 doi tuong co id la id truyen vao, orFail tra ve fail neu ko co
-//        return view("product.edit", ["product"=>$product]);
-//    }
-//    public function updateProduct($id, Request $request){
-//        //tra ve id
-//        $brands = Brand::findOrFail($id);//lấy giá trị category theo giá trị đã sửa
-//        //validate
-//        $request->validate([
-//            "brand_name"=> "required|min:2|unique:brands,brand_name,($id)"//truyền vào giá trị id muốn loại trừ để giống đc chứ ko unique
-//        ]);
-//        //sau khi lấy được giá trị update mới và qua khâu validator thì update vào DB, update xong redirect về list, nếu ko đc thì back lại
-//        try {
-//            $brands->update([
-//                "brand_name"=> $request->get("brand_name")
-//            ]);
-//        }catch (\Exception $exception){
-//            return redirect()->back();
-//        }
-//        return redirect()->to("/list-brand");
-//    }
-//    public function deleteProduct($id){
-//        $brands = Brand::findOrFail($id);//lấy category được truyền vào id lấy từ param
-//        try {
-//            $brands->delete();//xóa category
-//        }catch (\Exception $exception){
-//            return redirect()->back();
-//        }
-//        return redirect()->to("/list-brand");
-//    }
+    public function editProduct($id){
+        $categories = Category::all();
+        $brands = Brand::all();
+//        $category = Category::find($id);
+//        if(is_null($category))
+//            abort(404);//neu category = null trả về trang 404, dòng 73 74 75 code = dòng 76, thường dùng cách thứ 2
+        $product = Product::findOrFail($id);//find tra ve 1 doi tuong co id la id truyen vao, orFail tra ve fail neu ko co
+        return view("products.edit", [
+            "product"=>$product,
+            "categories"=>$categories,
+            "brands"=>$brands
+        ]);
+    }
+    public function updateProduct($id, Request $request){
+        //tra ve id
+        $product = Product::findOrFail($id);//lấy giá trị product theo giá trị đã sửa
+        //validate
+        $request->validate([
+            "product_name"=>"required|min:3|unique:products,product_name,($id)",
+            "product_desc"=>"required",
+            "price"=>"required|numeric|min:0",
+            "qty"=>"required|numeric|min:1",
+            "category_id"=>"required",
+            "brand_id"=>"required",
+        ]);
+        //sau khi lấy được giá trị update mới và qua khâu validator thì update vào DB, update xong redirect về list, nếu ko đc thì back lại
+        try {
+            $productImage = $product->get("product_image");
+            //xử lí để đưa ảnh lên thư mục media trong public
+            //sau đó lấy nguồn file cho vào biến $productImage
+            if ($request->hasFile("product_image")){//nếu request gửi lên cả file product_image là input name
+                $file = $request->file("product_image");
+                $allow = ["png", "jpg", "jpeg", "gif"];
+                $extName = $file->getClientOriginalExtension();//lấy đuôi file
+                if(in_array($extName, $allow)){//đảm bảo đuôi file nằm trong 4 đuôi file trên thì mới up lên
+                    //get fileName
+                    $fileName = time().$file->getClientOriginalName();//name client gửi lên thế nào thì sẽ lấy đc như thế,
+                    //gắn mốc thời gian để phân biệt tránh trường hợp up 2 ảnh giống tên
+                    //upload file into public/media
+                    $file->move(public_path("media/products"), $fileName);
+                    //convert string to productName
+                    $productImage = "media/products/".$fileName;
+                }
+            }
+            $product->update([
+                "product_name"=>$request->get("product_name"),
+                "product_image"=>$productImage,
+                "product_desc"=>$request->get("product_desc"),
+                "price"=>$request->get("price"),
+                "qty"=>$request->get("qty"),
+                "category_id"=>$request->get("category_id"),
+                "brand_id"=>$request->get("brand_id"),
+            ]);
+        }catch (\Exception $exception){
+            return redirect()->back();
+        }
+        return redirect()->to("/admin/list-product");
+    }
+    public function deleteProduct($id){
+        $products = Product::findOrFail($id);//lấy category được truyền vào id lấy từ param
+        try {
+            $products->delete();//xóa category
+        }catch (\Exception $exception){
+            return redirect()->back();
+        }
+        return redirect()->to("/admin/list-product");
+    }
 }
 

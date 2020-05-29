@@ -6,7 +6,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Brand Listing</h3>
-            <a href="{{url('/new-brand')}}" class="btn btn-outline-dark ml-3">+</a>
+            <a href="{{url('/admin/new-brand')}}" class="btn btn-outline-dark ml-3">+</a>
 
             <div class="card-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
@@ -40,7 +40,7 @@
                     <td>{{$brand->__get("updated_at")}}</td>
                     <td><a href="{{url("/edit-brand/{$brand->__get("id")}")}}" class="btn btn-outline-dark">Edit</a></td>
                     <td>
-                        <form action="{{url("/delete-brand/{$brand->__get("id")}")}}" method="post">
+                        <form action="{{url("/admin/delete-brand/{$brand->__get("id")}")}}" method="post">
                             @method("DELETE")
                             @csrf
                             <button class="btn btn-outline-dark" type="submit" onclick="return confirm('Are you sure?');">Delete</button>

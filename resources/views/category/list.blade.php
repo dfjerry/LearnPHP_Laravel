@@ -6,7 +6,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Category Listing</h3>
-            <a href="{{url('/new-category')}}" class="btn btn-outline-dark ml-3">+</a>
+            <a href="{{url('/admin/new-category')}}" class="btn btn-outline-dark ml-3">+</a>
 
             <div class="card-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
@@ -25,6 +25,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Category Name</th>
+                    <th>Category Image</th>
                     <th>Created At</th>
                     <th>Updated At</th>
                     <th>Edit Category</th>
@@ -37,13 +38,14 @@
                 <tr>
                     <td>{{$category->__get("id")}}</td>
                     <td>{{$category->__get("category_name")}}</td>
+                    <td><img src="{{$category->getImage()}}" style="width: 50px; height: 50px;"></td>
                     <td>{{$category->__get("created_at")}}</td>
                     <td>{{$category->__get("updated_at")}}</td>
                     <td>
-                        <a href="{{url("/edit-category/{$category->__get("id")}")}}" class="btn btn-outline-dark">Edit</a>
+                        <a href="{{url("/admin/edit-category/{$category->__get("id")}")}}" class="btn btn-outline-dark">Edit</a>
                     </td>
                     <td>
-                        <form action="{{url("/delete-category/{$category->__get("id")}")}}" method="post">
+                        <form action="{{url("/admin/delete-category/{$category->__get("id")}")}}" method="post">
                             @method("DELETE")
                             @csrf
 {{--                            nếu ko có @csrf tạo mã token sẽ bị lỗi 419--}}

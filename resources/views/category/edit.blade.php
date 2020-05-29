@@ -8,7 +8,7 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form role="form" action="{{url("/update-category/{$category->__get("id")}")}}" method="post">
+        <form role="form" action="{{url("/admin/update-category/{$category->__get("id")}")}}" method="post" enctype="multipart/form-data">
             @method("PUT")
 {{--            edit nen method = PUT --}}
             {{--            @method("POST") báo route--}}
@@ -19,6 +19,14 @@
                     <label for="exampleInputEmail1">Category Name</label>
                     <input value="{{$category->__get("category_name")}}" class="form-control @error("category_name") is-invalid @enderror" type="text" name="category_name" id="exampleInputEmail1" placeholder="Enter name">
                     @error("category_name")
+                    <span class="error invalid-feedback">{{$message}}</span>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <div><label for="exampleInputEmail1">Category Image</label></div>
+                    <img src="{{$category->getImage()}}" style="width: 70px; height: 70px;"/>
+                    <input class="form-control @error("category_image") is-invalid @enderror" type="file" name="category_image" />
+                    @error("category_image")
                     <span class="error invalid-feedback">{{$message}}</span>
                     @enderror
                 </div>

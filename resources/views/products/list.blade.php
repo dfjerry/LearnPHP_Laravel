@@ -6,7 +6,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Product Listing</h3>
-            <a href="{{url('/new-product')}}" class="btn btn-outline-dark ml-3">+</a>
+            <a href="{{url('/admin/new-product')}}" class="btn btn-outline-dark ml-3">+</a>
 
             <div class="card-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
@@ -25,6 +25,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Product Name</th>
+                    <th>Product Image</th>
                     <th>Description</th>
                     <th>Price</th>
                     <th>Quantity</th>
@@ -44,6 +45,7 @@
 {{--                    @endphp--}}
                     <tr>
                         <td>{{$product->__get("id")}}</td>
+                        <td>{{$product->__get("product_name")}}</td>
                         <td><img src="{{$product->getImage()}}" style="width: 50px; height: 50px;"/></td>
                         <td>{{$product->__get("product_desc")}}</td>
                         <td>{{number_format($product->__get("price"))}}</td>
@@ -53,10 +55,10 @@
                         <td>{{$product->__get("created_at")}}</td>
                         <td>{{$product->__get("updated_at")}}</td>
                         <td>
-                            <a href="{{url("/edit-category/{$product->__get("id")}")}}" class="btn btn-outline-dark">Edit</a>
+                            <a href="{{url("/admin/edit-product/{$product->__get("id")}")}}" class="btn btn-outline-dark">Edit</a>
                         </td>
                         <td>
-                            <form action="{{url("/delete-category/{$product->__get("id")}")}}" method="post">
+                            <form action="{{url("/admin/delete-product/{$product->__get("id")}")}}" method="post">
                                 @method("DELETE")
                                 @csrf
                                 {{--                            nếu ko có @csrf tạo mã token sẽ bị lỗi 419--}}

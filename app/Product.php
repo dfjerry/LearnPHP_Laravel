@@ -23,6 +23,9 @@ class Product extends Model
         }
         return asset($this->__get("product_image"));
     }
+    public function getPrice(){
+        return "$".number_format($this->__get("price"));
+    }
     public function Category(){
         return $this->belongsTo("\App\Category", "category_id");
     }

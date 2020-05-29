@@ -8,7 +8,7 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form role="form" action="{{url("save-brand")}}" method="post">
+        <form role="form" action="{{url("/admin/save-brand")}}" method="post">
             @method("POST")
 {{--            @method("POST") báo route--}}
             @csrf

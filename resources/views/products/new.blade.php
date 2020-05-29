@@ -8,7 +8,7 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form role="form" action="{{url("save-product")}}" method="post" enctype="multipart/form-data">
+        <form role="form" action="{{url("/admin/save-product")}}" method="post" enctype="multipart/form-data">
 {{--            Bắt buộc phỉa thêm multipart/form-date để lưu trữ file dạng khác text--}}
             @method("POST")
             {{--            @method("POST") báo route--}}
