@@ -41,17 +41,17 @@ class HomeController extends Controller
     }
     public function category(Category $category){//router model binding
         //$products = Product::where("category_id", $category->__get("id")->paginate(12));//c1 truy vấn thẳng trong bảng product
-        $products = $category->Products()->paginate(12);//cach 2 lấy quan hệ đối tượng dựa theo đối tượng
+        $products = $category->Products()->simplePaginate(12);//cach 2 lấy quan hệ đối tượng dựa theo đối tượng
         return view("frontend.category", [
             "category"=>$category,//trả category về cho trang front end
             "products"=>$products,
             ]);
     }
     public function product(Product $product){//router model binding
-        $categories = Category::all();
-        $category = Category::where("category_id", $category->__get("id")->paginate(12));
+        $relativeProduct = Product::with("Category")->paginate(4);//nạp sẵn phần cần nạp trong collection, lấy theo kiểu quan hệ
         return view("frontend.product", [
-            "product"=>$product
+            "product"=>$product,
+            "relativeProduct"=>$relativeProduct,
         ]);
     }
 }
