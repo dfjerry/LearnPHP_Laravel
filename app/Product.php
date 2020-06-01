@@ -32,4 +32,7 @@ class Product extends Model
     public function Brand(){
         return $this->belongsTo("\App\Brand");
     }
+    public function getProductUrl(){
+        return url("/product/{$this->__get("slug")}");
+    }
 }

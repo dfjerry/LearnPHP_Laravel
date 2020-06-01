@@ -5,6 +5,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
+
             <h3 class="card-title">Category Listing</h3>
             <a href="{{url('/admin/new-category')}}" class="btn btn-outline-dark ml-3">+</a>
 
@@ -18,6 +19,7 @@
                 </div>
             </div>
         </div>
+
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0">
             <table class="table table-hover text-nowrap">

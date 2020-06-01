@@ -1,6 +1,7 @@
 @extends("layout")
 @section("content")
-        <form>
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
             <x-inputs.email type="type" name="email" holder="Email"/>
             <x-inputs.password type="password" name="password" holder="Password"/>
             <x-inputs.button/>

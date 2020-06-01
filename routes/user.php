@@ -1,8 +1,10 @@
 <?php
 
-Route::get('/', 'HomeController@index')->name('home');
-Route::get('/demo-routing', "WebController@demoRouting");//goi sang controller, action chính là function trong controller
-//Route::get('/login', 'WebController@login');
-//Route::get('/register', 'WebController@register');
-//Route::get('/forgot', 'WebController@forgot');
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'WebController@index');
+//laravel 6x category:slug, hieu la lay slug trong thang category
+Route::get("/category/{category:slug}", "HomeController@category");//router model binding
+Route::get("/product/{product:slug}", "HomeController@product");//router model binding
+
+
 

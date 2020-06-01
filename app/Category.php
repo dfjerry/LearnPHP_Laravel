@@ -22,4 +22,13 @@ class Category extends Model
         }
         return asset($this->__get("category_image"));
     }
+    //version 5.8 laravel
+//    public function getRouteKeyName(){
+//        return "slug";
+//    }
+    public function getCategoryUrl(){
+            return url("/category/{$this->__get("slug")}");
+    }
+
+
 }

@@ -14,17 +14,9 @@ class WebController extends Controller
 //    public function demoRouting(){
 //        return view("demo");// tra ve file demo.blade.php, nhung chi can viet demo
 //    }
-//    public function login(){
-//        return view("login");
-//    }
-//    public function register(){
-//        return view("register");
-//    }
-//    public function forgot(){
-//        return view("forgot");
-//    }
+
     public function index(){
-        return view("home");
+        return view("login");
     }
     public function dashboard(){
         return view("dashboard");
@@ -130,8 +122,10 @@ class WebController extends Controller
 //                "updated_at"=> Carbon::now()
 //            ]);
         }catch (\Exception $exception){
+//            dd($exception);
             return redirect()->back();//back() trở lại trang trước, ở đây là trang form
         }
+
         return redirect()->to("/admin/list-category");
     }
     public function deleteCategory($id){

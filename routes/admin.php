@@ -24,3 +24,5 @@ Route::post("/save-product", "WebController@saveProduct");
 Route::get('/edit-product/{id}', 'WebController@editProduct');
 Route::put('/update-product/{id}', 'WebController@updateProduct');
 Route::delete('/delete-product/{id}', 'WebController@deleteProduct');
+
+
