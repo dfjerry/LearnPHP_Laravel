@@ -2,6 +2,7 @@
 
 namespace App;
 
+use http\Env\Request;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -35,4 +36,6 @@ class Product extends Model
     public function getProductUrl(){
         return url("/product/{$this->__get("slug")}");
     }
+
+
 }

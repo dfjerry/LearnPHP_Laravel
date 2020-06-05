@@ -6,5 +6,10 @@ Route::get('/', 'WebController@index');
 Route::get("/category/{category:slug}", "HomeController@category");//router model binding
 Route::get("/product/{product:slug}", "HomeController@product");//router model binding
 
+Route::post("/cart/add/{product}", "HomeController@addToCart");
+
+Route::get("/shopping-cart","HomeController@shoppingCart");
+Route::get("/checkout","HomeController@checkout")->middleware("auth");
+
 
 

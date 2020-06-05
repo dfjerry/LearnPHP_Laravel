@@ -13,10 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Auth::routes();
-Route::group(["middleware"=>["admin", "auth"]], function () {
     require_once "user.php";
-});
-
 Route::group(["middleware"=>["admin", "auth"], "prefix"=>"admin"], function () {
     require_once "admin.php";
 });

@@ -55,12 +55,21 @@
         <div class="container">
             <div class="row">
                 <div class="categories__slider owl-carousel">
-                    @foreach($categories as $category)
-                    <div class="col-lg-3">
-                        <div style="width: 262.5px; height: 270px;" class="categories__item set-bg" data-setbg="{{$category->getImage()}}">
-                            <h5><a href="#">{{$category->__get("category_name")}}</a></h5>
-                        </div>
-                    </div>
+{{--                    @foreach($categories as $category)--}}
+{{--                    <div class="col-lg-3">--}}
+{{--                        <div style="width: 262.5px; height: 270px;" class="categories__item set-bg" data-setbg="{{$category->getImage()}}">--}}
+{{--                            <h5><a href="#">{{$category->__get("category_name")}}</a></h5>--}}
+{{--                            <h6></h6>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                        @endforeach--}}
+                        @foreach($most_viewer as $mow)
+                            <div class="col-lg-3">
+                                <div class="categories__item set-bg" data-setbg="{{$mow->getImage()}}">
+                                    <h5 style="align-items: center"><a href="#">{{$mow->__get("product_name")}}</a></h5>
+                                    <h4><b>View:</b><a href="#">{{$mow->__get("view_count")}}</a></h4>
+                                </div>
+                            </div>
                         @endforeach
                 </div>
             </div>
@@ -95,7 +104,7 @@
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li><a href="javascript:void(0);" onclick="addToCart({{$featured->__get("id")}});"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="featured__item__text">
