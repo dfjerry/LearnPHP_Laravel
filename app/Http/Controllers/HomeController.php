@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Cart;
 use App\Category;
+use App\Events\OrderCreated;
+use App\Order;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Psy\Util\Str;
 
 class HomeController extends Controller
@@ -70,10 +75,28 @@ class HomeController extends Controller
         // kiem tra session neu co truong my_cart va mang my_cart neu khong co se truyen vao 1 mang rong~
         // nguyen tac lam trang gio hang se tang so luong chu khong tang san pham vao
         $contain = false;// dat 1 bien de kiem tra trang thai san pham co hay chua
-        foreach ($myCart as $item) {
+        if(Auth::check()){//neu dang nhap roi
+            if(Cart::where("user_id", Auth::id())
+                    ->where("is_checkout", true)
+                    ->exists())
+            {
+                $cart = Cart::where("user_id", Auth::id())
+                            ->where("is_checkout", true)
+                            ->first();
+            }else{
+                $cart = Cart::create([//hứng về đưa sang bảng trung gian
+                    "user_id"=>Auth::id(),
+                    "is_checkout"=>true
+                ]);
+            }
+        }
+        foreach ($myCart as $key=>$item) {
             if($item["product_id"] == $product -> __get("id"))  {// nếu sản phẩm đã có trong giỏ
-                $item["qty"]+=$qty;// nếu có thì sẽ truyền thêm vào biến qty ở trên
+                $myCart[$key]["qty"] += $qty;// nếu có thì sẽ truyền thêm vào biến qty ở trên
                 $contain = true;// neu co san pham se truyen trang thai ve true
+                DB::table("cart_product")->where("cart_id", $cart->__get("id"))
+                    ->where("product_id", $item["product_id"])
+                    ->update(["qty"=> $myCart[$key]["qty"]]);
                 break;
             };
         }
@@ -82,9 +105,17 @@ class HomeController extends Controller
                 "product_id" => $product->__get("id"),
                 "qty" => $qty,
             ];
+            if(Auth::check()) {
+                DB::table("cart_product")->insert([
+                    "qty"=>$qty,
+                    "cart_id"=>$cart->__get("id"),
+                    "product_id"=>$product->__get("id"),
+                ]);
+            }
         }
         // nap lai session cũ
         session(["my_cart"=>$myCart]);
+
         // return redirect về trang trước
         return redirect()->to("/shopping-cart");
     }
@@ -110,6 +141,54 @@ class HomeController extends Controller
         ]);
     }
     public function checkout(){
-        return view("frontend.checkout");
+        $cart = Cart::where("user_id", Auth::id())->where("is_checkout", true)->with("getItems")->firstOrFail();
+        return view("frontend.checkout", [
+            "cart"=>$cart
+        ]);
+    }
+    public function placeOrder(Request $request){
+        $request->validate([
+            "username"=>'required',
+            "address"=>'required',
+            "telephone"=>'required',
+        ]);
+        $cart = Cart::where("user_id", Auth::id())
+            ->where("is_checkout", true)
+            -> with("getItems")
+            ->firstOrFail();
+        $grandTotal = 0;
+        foreach ($cart->getItems as $item){
+            $grandTotal+=$item->pivot->__get("qty")*$item->__get("price");
+        }
+        try {
+            $order = Order::create([
+                "user_id"=>Auth::id(),
+                "username"=>$request->get("username"),
+                "address"=>$request->get("address"),
+                "telephone"=>$request->get("telephone"),
+                "note"=>$request->get("note"),
+                "grand_total"=>$grandTotal,
+                "status"=> Order::PENDING,
+            ]);
+            foreach ($cart->getItems as $item){
+                DB::table("orders_products")->insert([
+                   "order_id"=>$order->__get("id"),
+                   "product_id"=>$item->__get("id"),
+                   "price"=>$item->__get("price"),
+                   "qty"=>$item->pivot->__get("qty"),
+                ]);
+            }
+            event(new OrderCreated($order));//Hàm phát ra sự kiện
+        }catch (\Exception $exception){
+            dd($exception);
+        }
+        return redirect()->to("/");
+    }
+    public function search(Request $request){
+        $products =Product::where('product_name', 'like', '%'.$request->search.'%')->
+                            orwhere('price', $request->search)->get();
+        return view("frontend.search", [
+            "products"=> $products
+        ]);
     }
 }

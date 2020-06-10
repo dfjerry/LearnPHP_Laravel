@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\OrderCreated;
+use App\Listeners\CleanCart;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -14,10 +16,13 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [
+    protected $listen = [//danh sách các listener sẽ lắng nghe
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        OrderCreated::class => [//khi sự kiện phát ra thằng nào sẽ lắng nghe
+            CleanCart::class,
+        ]
     ];
 
     /**

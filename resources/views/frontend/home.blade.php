@@ -66,7 +66,7 @@
                         @foreach($most_viewer as $mow)
                             <div class="col-lg-3">
                                 <div class="categories__item set-bg" data-setbg="{{$mow->getImage()}}">
-                                    <h5 style="align-items: center"><a href="#">{{$mow->__get("product_name")}}</a></h5>
+                                    <h5 style="align-items: center"><a href="{{$mow->getProductUrl()}}">{{$mow->__get("product_name")}}</a></h5>
                                     <h4><b>View:</b><a href="#">{{$mow->__get("view_count")}}</a></h4>
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">{{$featured->__get("product_name")}}</a></h6>
+                            <h6><a href="{{$featured->getProductUrl()}}">{{$featured->__get("product_name")}}</a></h6>
                             <h5>{{$featured->getPrice()}}</h5>
                         </div>
                     </div>
@@ -148,7 +148,7 @@
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
                                 @foreach($latests1 as $latest1)
-                                    <a href="#" class="latest-product__item">
+                                    <a href="{{$latest1->getProductUrl()}}" class="latest-product__item">
                                         <div class="latest-product__item__pic">
                                             <img src="{{$latest1->getImage()}}" alt="" style="width: 110px; height: 110px;">
                                         </div>
@@ -161,7 +161,7 @@
                             </div>
                             <div class="latest-prdouct__slider__item">
                                 @foreach($latests2 as $latest2)
-                                    <a href="#" class="latest-product__item">
+                                    <a href="{{$latest2->getProductUrl()}}" class="latest-product__item">
                                         <div class="latest-product__item__pic">
                                             <img src="{{$latest2->getImage()}}" alt="" style="width: 110px; height: 110px;">
                                         </div>
