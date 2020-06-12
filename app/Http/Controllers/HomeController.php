@@ -121,17 +121,18 @@ class HomeController extends Controller
     }
     public function shoppingCart(){
         $myCart = session()->has("my_cart") && is_array(session("my_cart"))?session("my_cart"):[];
-        $productIds = [];
+        $productIDs = [];
         foreach ($myCart as $item){
-            $productIds[] = $item["product_id"];
+            $productIDs[] = $item["product_id"];
         }
         $grandTotal = 0;
-        $products = \App\Product::find($productIds);//truyen vao 1 mang gom cac id
+        $products = \App\Product::find($productIDs);//truyen vao 1 mang gom cac id
         foreach ($products as $p){
             foreach ($myCart as $item){
                 if ($p->__get("id") == $item["product_id"]){
                     $grandTotal += ($p->__get("price")*$item["qty"]);// tinh tong tien
                     $p->cart_qty = $item["qty"];// them doi tuong cart_qty de foreach ra mang
+
                 }
             }
         }
@@ -148,7 +149,7 @@ class HomeController extends Controller
     }
     public function placeOrder(Request $request){
         $request->validate([
-            "username"=>'required',
+            "user_name"=>'required',
             "address"=>'required',
             "telephone"=>'required',
         ]);
@@ -158,12 +159,12 @@ class HomeController extends Controller
             ->firstOrFail();
         $grandTotal = 0;
         foreach ($cart->getItems as $item){
-            $grandTotal+=$item->pivot->__get("qty")*$item->__get("price");
+            $grandTotal += $item->pivot->__get("qty")*$item->__get("price");
         }
         try {
             $order = Order::create([
                 "user_id"=>Auth::id(),
-                "username"=>$request->get("username"),
+                "user_name"=>$request->get("user_name"),
                 "address"=>$request->get("address"),
                 "telephone"=>$request->get("telephone"),
                 "note"=>$request->get("note"),
@@ -180,9 +181,9 @@ class HomeController extends Controller
             }
             event(new OrderCreated($order));//Hàm phát ra sự kiện
         }catch (\Exception $exception){
-            dd($exception);
+            dd($exception->getMessage());
         }
-        return redirect()->to("/");
+        return redirect()->to("/home");
     }
     public function search(Request $request){
         $products =Product::where('product_name', 'like', '%'.$request->search.'%')->

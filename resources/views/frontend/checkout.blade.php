@@ -16,25 +16,23 @@
                     @csrf
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="checkout__input">
-                                        <p> Name<span>*</span></p>
-                                        <input name="username" value="{{\Illuminate\Support\Facades\Auth::user()->__get("name")}}" type="text">
-                                    </div>
-                                </div>
+                            <div class="checkout__input">
+                                <p> Name<span>*</span></p>
+                                <input  name="user_name" value="{{\Illuminate\Support\Facades\Auth::user()->__get("name")}}" type="text">
                             </div>
                             <div class="checkout__input">
                                 <p>Address<span>*</span></p>
-                                <input name="address"  type="text">
+                                <input class="@error("address") is-invalid @enderror" name="address"  type="text">
+                                @error("address")
+                                <span class="error invalid-feedback">{{$message}}</span>
+                                @enderror
                             </div>
                             <div class="checkout__input">
                                 <p>TelePhone<span>*</span></p>
-                                <input name="telephone" type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Status<span>*</span></p>
-                                <input name="status" type="text">
+                                <input class="@error("telephone") is-invalid @enderror" name="telephone" type="text">
+                                @error("telephone")
+                                <span class="error invalid-feedback">{{$message}}</span>
+                                @enderror
                             </div>
                             <div class="checkout__input">
                                 <p>Note<span>*</span></p>
@@ -49,11 +47,11 @@
                                 <ul>
                                     @php $grandTotal = 0 @endphp
                                     @foreach($cart->getItems as $item)
-                                    <li>{{$item->__get("product_name")}}
-                                        <span>{{$item->__get("price")*$item->pivot->__get("qty")}}</span>
-                                    </li>
-                                        @php $grandTotal += ($item->__get("price")*$item->pivot->__get("qty")) @endphp
-                                @endforeach
+                                        <li>{{$item->__get("product_name")}}
+                                            <span>${{$item->__get("price")* $item->pivot->__get("qty")}}</span>
+                                        </li>
+                                        @php $grandTotal += ($item->__get("price")* $item->pivot->__get("qty"))@endphp
+                                    @endforeach
                                 </ul>
                                 <div class="checkout__order__subtotal">Subtotal <span>${{$grandTotal}}</span></div>
                                 <div class="checkout__order__total">Total <span>${{$grandTotal}}</span></div>

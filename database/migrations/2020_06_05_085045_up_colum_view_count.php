@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateTableCategories extends Migration
+class UpColumViewCount extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class UpdateTableCategories extends Migration
      */
     public function up()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->string("category_image")->after("category_name")->nullable();//them vao sau cot product_name
+        Schema::table('products', function (Blueprint $table) {
+            $table->unsignedBigInteger("view_count")->default(0)->after("brand_id"); // cap nhat truong view_count voi default ban dau  = 0
         });
     }
 
@@ -25,8 +25,8 @@ class UpdateTableCategories extends Migration
      */
     public function down()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->dropColumn(["category_image"]);
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn("view_count");
         });
     }
 }

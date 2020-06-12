@@ -13,3 +13,6 @@ Route::get("/checkout","HomeController@checkout")->middleware("auth");
 Route::post("/checkout","HomeController@placeOrder")->middleware("auth");
 
 Route::post("/search", "HomeController@search");
+
+
+Route::get('mail', 'EmailController@sendEmail');

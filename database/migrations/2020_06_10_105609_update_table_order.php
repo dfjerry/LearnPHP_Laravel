@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateOrdersTable extends Migration
+class UpdateTableOrder extends Migration
 {
     /**
      * Run the migrations.
@@ -15,10 +15,11 @@ class UpdateOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->string("user_name")->after("user_id");
-            $table->text("address")->after("user_id");
-            $table->string("telephone")->after("user_id");
-            $table->text("note")->after("user_id")->nullable();
-            $table->unsignedBigInteger("status")->default(0)->after("grand_total");
+            $table->text("address")->after("user_name");
+            $table->string("telephone")->after("address");
+            $table->string("note")->after("telephone")->nullable();
+            $table->unsignedInteger("status")->default(0)->after("grand_total");
+
         });
     }
 
@@ -30,11 +31,11 @@ class UpdateOrdersTable extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn("user_name");
-            $table->dropColumn("address");
-            $table->dropColumn("telephone");
-            $table->dropColumn("note");
-            $table->dropColumn("status");
+            $table->dropColumn(["user_name"]);
+            $table->dropColumn(["address"]);
+            $table->dropColumn(["telephone"]);
+            $table->dropColumn(["note"]);
+            $table->dropColumn(["status"]);
         });
     }
 }

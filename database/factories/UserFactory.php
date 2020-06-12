@@ -26,10 +26,10 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
-$factory->define(\App\Brand::class, function (Faker $faker){
+$factory->define(\App\Category::class, function (Faker $faker){
    return [
        //define 1 factory de insert vao du lieu ao
-     "brand_name"=>$faker->unique()->company
+     "category_name"=>$faker->unique()->company
    ];
 });
 $factory->define(\App\Product::class, function (Faker $faker) {
@@ -38,7 +38,7 @@ $factory->define(\App\Product::class, function (Faker $faker) {
        'product_desc'=>$faker->text,
        'price'=>$faker->numberBetween(0, 50000),
        'qty'=>$faker->numberBetween(1, 200),
-       'category_id'=>$faker->numberBetween(3, 10),
-       'brand_id'=>$faker->numberBetween(5, 10),
+       'category_id'=>$faker->numberBetween(1, 10),
+       'brand_id'=>$faker->numberBetween(1, 10),
    ] ;
 });

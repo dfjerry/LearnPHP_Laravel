@@ -14,13 +14,14 @@ class CreateTableOrdersProducts extends Migration
     public function up()
     {
         Schema::create('orders_products', function (Blueprint $table) {
-            //$table->id(); bang trung gian không cần id
+//            $table->id(); bảng trung gian không cần id
             $table->unsignedBigInteger("order_id");
             $table->foreign("order_id")->references("id")->on("orders");
             $table->unsignedBigInteger("product_id");
             $table->foreign("product_id")->references("id")->on("products");
             $table->unsignedInteger("qty")->default(1);
-            $table->decimal("price", 12, 4)->unsigned();//unsigned là không âm
+            $table->decimal("price",12,4)->unsigned();
+
             $table->timestamps();
         });
     }

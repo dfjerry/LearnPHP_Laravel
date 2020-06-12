@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateTableProduct extends Migration
+class UpdateTableBrand extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class UpdateTableProduct extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->string("product_image")->after("product_name")->nullable();//them vao sau cot product_name
+        Schema::table('brands', function (Blueprint $table) {
+            $table->string("brand_image")->after("brand_name")->nullable(); //
         });
     }
 
@@ -25,8 +25,8 @@ class UpdateTableProduct extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn(["product_image"]);
+        Schema::table('brands', function (Blueprint $table) {
+            //
         });
     }
 }

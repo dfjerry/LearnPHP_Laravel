@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateTableCategories extends Migration
+class UpdateTableProduct extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class UpdateTableCategories extends Migration
      */
     public function up()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->string("slug")->unique()->after("category_name")->nullable();//them vao sau cot product_name
+        Schema::table('products', function (Blueprint $table) {
+            //
+            $table->string("product_image")->after("product_name")->nullable(); // thêm vào ngay sau trường product_name
         });
     }
 
@@ -25,8 +26,8 @@ class UpdateTableCategories extends Migration
      */
     public function down()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->dropColumn(["slug"]);
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn(["product_image"]);
         });
     }
 }

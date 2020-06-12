@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateColumnViewCount extends Migration
+class UpdateTableUsersAddRole extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class UpdateColumnViewCount extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->unsignedBigInteger("view_count")->default(0)->after("brand_id"); // cap nhat truong view_count voi default ban dau  = 0
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger("role")->after("password")->default(0); // role phan quyen
         });
     }
 
@@ -25,8 +25,8 @@ class UpdateColumnViewCount extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn("view_count");
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(["role"]);
         });
     }
 }

@@ -18,6 +18,7 @@
                             </thead>
                             <tbody>
                             @foreach($products as $p)
+{{--                                @php dd($products) @endphp--}}
                                 <tr>
                                     <td class="shoping__cart__item">
                                         <img src="{{$p->getImage()}}" style="width: 260px; height: 200px" alt="">
@@ -36,6 +37,7 @@
                                     <td class="shoping__cart__total">
                                         ${{$p->cart_qty * $p->__get("price")}}
                                     </td>
+
                                     <td class="shoping__cart__item__close">
                                         <span class="icon_close"></span>
                                     </td>

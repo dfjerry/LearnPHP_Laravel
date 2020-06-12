@@ -16,6 +16,8 @@ class UpdateUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->timestamp('email_verified_at')->nullable()->after("email");
             $table->rememberToken()->after("password");
+            // them 2 trường vào sau email và password
+            // thêm các trường phụ vào
             $table->string("image")->nullable()->after("name");
             $table->text("address")->nullable()->after("email");
             $table->string("telephone")->nullable()->after("email");
@@ -30,10 +32,11 @@ class UpdateUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
+            // drop cac trường vừa thêm ở trên
             $table->dropColumn(["email_verified_at"]);
             $table->dropRememberToken();
             $table->dropColumn(["image"]);
-            $table->dropColumn(["adress"]);
+            $table->dropColumn(["address"]);
             $table->dropColumn(["telephone"]);
         });
     }
