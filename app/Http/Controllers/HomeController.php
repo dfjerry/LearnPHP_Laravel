@@ -38,6 +38,13 @@ class HomeController extends Controller
             $p->save();
             //tương đương $p->update(["slug"=>$slug.$p->__get("id");])
         }
+        $categories = Category::all();
+        foreach ($categories as $p){
+            $slug = \Illuminate\Support\Str::slug($p->__get("category_name"));
+            $p->slug = $slug.$p->__get("id");
+            $p->save();
+            //tương đương $p->update(["slug"=>$slug.$p->__get("id");])
+        }
         // lấy ra những sản phẩm nhiều người xem
 //        $u = Auth::user();
 //        $u->role = User::ADMIN_ROLE;
