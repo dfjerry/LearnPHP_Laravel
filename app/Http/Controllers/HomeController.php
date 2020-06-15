@@ -30,7 +30,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-
+        $categories = Category::all();
+        $most_viewer = Product::orderBy("view_count","DESC")->limit(8)->get();
+        $featureds = Product::orderBy("updated_at", "DESC")->limit(8)->get();
+        $latests1 = Product::orderBy("created_at", "DESC")->limit(3)->get();
+        $latests2 = Product::orderBy("created_at", "DESC")->offset(3)->limit(3)->get();//offset: bỏ qua 3 thằng đầu
 //        $products = Product::all();
 //        foreach ($products as $p){
 //            $slug = \Illuminate\Support\Str::slug($p->__get("product_name"));
@@ -39,36 +43,44 @@ class HomeController extends Controller
 //            //tương đương $p->update(["slug"=>$slug.$p->__get("id");])
 //        }
         // lấy ra những sản phẩm nhiều người xem
-        $u = Auth::user();
-        $u->role = User::ADMIN_ROLE;
-        $u->save();
-        if(!Cache::has("home_page")){//nếu chưa có cache, lưu những thg dưới vào cache
-            $categories = Category::all();
-            $most_viewer = Product::orderBy("view_count","DESC")->limit(8)->get();
-            $featureds = Product::orderBy("updated_at", "DESC")->limit(8)->get();
-            $latests1 = Product::orderBy("created_at", "DESC")->limit(3)->get();
-            $latests2 = Product::orderBy("created_at", "DESC")->offset(3)->limit(3)->get();//offset: bỏ qua 3 thằng đầu
-            $view = view("frontend.home", [
-                "most_viewer"=>$most_viewer,
-                "featureds"=>$featureds,
-                "latests1"=>$latests1,
-                "latests2"=>$latests2,
-                "categories"=> $categories,
-            ])->render();
-            $now = Carbon::now();//lấy tương tự date/time
-            Cache::put("home_page", $view, $now->addMinute(20));//set cache 20 phút
-            //cache put là nạp vào, thời hạn tối đa 20p tính từ thời điểm now().
-//            $cache = [
-//                "most_viewer" => $most_viewer,
+//        $u = Auth::user();
+//        $u->role = User::ADMIN_ROLE;
+//        $u->save();
+
+//        if(!Cache::has("home_page")){//nếu chưa có cache, lưu những thg dưới vào cache
+//            $categories = Category::all();
+//            $most_viewer = Product::orderBy("view_count","DESC")->limit(8)->get();
+//            $featureds = Product::orderBy("updated_at", "DESC")->limit(8)->get();
+//            $latests1 = Product::orderBy("created_at", "DESC")->limit(3)->get();
+//            $latests2 = Product::orderBy("created_at", "DESC")->offset(3)->limit(3)->get();//offset: bỏ qua 3 thằng đầu
+//            $view = view("frontend.home", [
+//                "most_viewer"=>$most_viewer,
 //                "featureds"=>$featureds,
 //                "latests1"=>$latests1,
 //                "latests2"=>$latests2,
 //                "categories"=> $categories,
-//            ];
-//            $data = Cache::get("home_page");
-        }
-        return Cache::get("home_page");
-
+//            ])->render();
+//            $now = Carbon::now();//lấy tương tự date/time
+//            Cache::put("home_page", $view, $now->addMinute(20));//set cache 20 phút
+//            //cache put là nạp vào, thời hạn tối đa 20p tính từ thời điểm now().
+//
+////            $cache = [
+////                "most_viewer" => $most_viewer,
+////                "featureds"=>$featureds,
+////                "latests1"=>$latests1,
+////                "latests2"=>$latests2,
+////                "categories"=> $categories,
+////            ];
+////            $data = Cache::get("home_page");
+//        }
+        //return Cache::get("home_page");
+        return view("frontend.home", [
+            "most_viewer"=>$most_viewer,
+            "featureds"=>$featureds,
+            "latests1"=>$latests1,
+            "latests2"=>$latests2,
+            "categories"=> $categories,
+        ]);
     }
 
 
