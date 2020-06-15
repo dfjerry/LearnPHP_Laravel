@@ -7,8 +7,11 @@ use App\Category;
 use App\Events\OrderCreated;
 use App\Order;
 use App\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Psy\Util\Str;
 
@@ -26,7 +29,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+
         $products = Product::all();
 //        foreach ($products as $p){
 //            $slug = \Illuminate\Support\Str::slug($p->__get("product_name"));
@@ -35,18 +38,36 @@ class HomeController extends Controller
 //            //tương đương $p->update(["slug"=>$slug.$p->__get("id");])
 //        }
         // lấy ra những sản phẩm nhiều người xem
-        $most_viewer = Product::orderBy("view_count","DESC")->limit(8)->get();
-        $featureds = Product::orderBy("updated_at", "DESC")->limit(8)->get();
-        $latests1 = Product::orderBy("created_at", "DESC")->limit(3)->get();
-        $latests2 = Product::orderBy("created_at", "DESC")->offset(3)->limit(3)->get();//offset: bỏ qua 3 thằng đầu
-        return view("frontend.home", [
-            "categories"=> $categories,
-            "featureds"=>$featureds,
-            "latests1"=>$latests1,
-            "latests2"=>$latests2,
-            "most_viewer"=>$most_viewer,
-        ]);
+        if(!Cache::has("home_page")){//nếu chưa có cache, lưu những thg dưới vào cache
+            $categories = Category::all();
+            $most_viewer = Product::orderBy("view_count","DESC")->limit(8)->get();
+            $featureds = Product::orderBy("updated_at", "DESC")->limit(8)->get();
+            $latests1 = Product::orderBy("created_at", "DESC")->limit(3)->get();
+            $latests2 = Product::orderBy("created_at", "DESC")->offset(3)->limit(3)->get();//offset: bỏ qua 3 thằng đầu
+            $view = view("frontend.home", [
+                "most_viewer"=>$most_viewer,
+                "featureds"=>$featureds,
+                "latests1"=>$latests1,
+                "latests2"=>$latests2,
+                "categories"=> $categories,
+            ])->render();
+            $now = Carbon::now();//lấy tương tự date/time
+            Cache::put("home_page", $view, $now->addMinute(20));//set cache 20 phút
+            //cache put là nạp vào, thời hạn tối đa 20p tính từ thời điểm now().
+//            $cache = [
+//                "most_viewer" => $most_viewer,
+//                "featureds"=>$featureds,
+//                "latests1"=>$latests1,
+//                "latests2"=>$latests2,
+//                "categories"=> $categories,
+//            ];
+//            $data = Cache::get("home_page");
+        }
+        return Cache::get("home_page");
+
     }
+
+
     public function category(Category $category){//router model binding
         //$products = Product::where("category_id", $category->__get("id")->paginate(12));//c1 truy vấn thẳng trong bảng product
         $products = $category->Products()->simplePaginate(12);//cach 2 lấy quan hệ đối tượng dựa theo đối tượng
@@ -132,7 +153,7 @@ class HomeController extends Controller
                 if ($p->__get("id") == $item["product_id"]){
                     $grandTotal += ($p->__get("price")*$item["qty"]);// tinh tong tien
                     $p->cart_qty = $item["qty"];// them doi tuong cart_qty de foreach ra mang
-
+                   // dd($item);
                 }
             }
         }
@@ -186,7 +207,7 @@ class HomeController extends Controller
         return redirect()->to("/home");
     }
     public function search(Request $request){
-        $products =Product::where('product_name', 'like', '%'.$request->search.'%')->
+        $products = Product::where('product_name', 'like', '%'.$request->search.'%')->
                             orwhere('price', $request->search)->get();
         return view("frontend.search", [
             "products"=> $products

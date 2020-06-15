@@ -66,8 +66,8 @@
                         @foreach($most_viewer as $mow)
                             <div class="col-lg-3">
                                 <div class="categories__item set-bg" data-setbg="{{$mow->getImage()}}">
-                                    <h5 style="align-items: center"><a href="{{$mow->getProductUrl()}}">{{$mow->__get("product_name")}}</a></h5>
-                                    <h4><b>View:</b><a href="#">{{$mow->__get("view_count")}}</a></h4>
+                                    <h5 style="align-items: center; font-weight: normal"><a href="{{$mow->getProductUrl()}}">{{$mow->__get("product_name")}}</a></h5>
+                                    <div class="col-12" style="background-color: #b0d4f1; "><p style="font-size: 25px; text-align: center">View:<a href="#">{{$mow->__get("view_count")}}</a></p></div>
                                 </div>
                             </div>
                         @endforeach
